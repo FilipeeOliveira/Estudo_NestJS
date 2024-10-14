@@ -1,0 +1,23 @@
+@baseUrl = http://localhost:3000 
+### AppControllerGetHello
+
+# @name AppControllerGetHello
+GET {{baseUrl}}/home/hello 
+### pode usar uma variavel para facilitar a vida
+
+
+### ExemploDeRota
+
+# @name ExemploDeRota
+GET http://localhost:3000/home/exemplo
+
+
+### ConceitosManualController
+
+# @name ConceitosManualControllerHome
+GET {{baseUrl}}/conceitos-manual
+
+### ConceitosautomaticoController
+
+# @name ConceitosautomaticoControllerHome
+GET {{baseUrl}}/conceitos-automatico
