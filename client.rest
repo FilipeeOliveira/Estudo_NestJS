@@ -16,9 +16,7 @@ Content-Type: application/json
 {
     "texto": "NOVO recado",
     "de": "Joana",
-    "para": "Joao",
-    "lido": false,
-    "data": "2024-10-15T12:51:01.150Z"
+    "para": "Joao"
   }
 
 #### Atualiza um recado
@@ -26,12 +24,9 @@ PATCH  {{baseUrl}}/recados/2/
 Content-Type: application/json
 
 {
-    "texto": "Atualizar o recado",
-    "de": "Joana",
-    "para": "Joao",
-    "lido": false,
-    "data": "2024-10-15T12:51:01.150Z"
-  }
+    "texto": "olaaaa",
+    "blaba":"osososad"
+}
 
 ### Apaga um recado
 DELETE {{baseUrl}}/recados/2/
