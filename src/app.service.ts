@@ -6,7 +6,7 @@ export class AppService {
     return 'Hello World!';
   }
 
-  solucinaExemplo(){
-    return 'Exemplo usa o service'
+  solucinaExemplo() {
+    return 'Exemplo usa o service';
   }
 }

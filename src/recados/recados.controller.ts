@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 
 // CRUD
 // Creat -> POST -> Criar um recado
@@ -12,33 +21,32 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/commo
 
 @Controller('recados')
 export class RecadosController {
+  @Get()
+  findAll(@Query() pagination: any) {
+    const { limit = 10, offset = 0 } = pagination;
+    return `Retornar todos os recados. Limite=${limit}, Offset=${offset}.`;
+  }
 
-    @Get()
-    findAll() {
-        return 'Essa rota retorna todos os recados'
-    }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return `Essa rota retorna o recado ${id}`;
+  }
 
-    @Get(':id')
-    findOne(@Param('id') id: string){
-        return `Essa rota retorna o recado ${id}`
-    }
+  @Post()
+  create(@Body() body: any) {
+    return body;
+  }
 
-    @Post()
-    create(@Body() body: any) {
-        return body
-    }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() body: any) {
+    return {
+      id,
+      ...body,
+    };
+  }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() body: any) {
-        return {
-            id,
-            ...body
-        }
-    }
-
-    @Delete(':id')
-    romove(@Param('id') id: string) {
-        return `Essa rota APAGA o ID ${id}`;
-    }
-        
+  @Delete(':id')
+  romove(@Param('id') id: string) {
+    return `Essa rota APAGA o ID ${id}`;
+  }
 }
