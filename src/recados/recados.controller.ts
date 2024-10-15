@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -37,7 +38,7 @@ export class RecadosController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.recadosService.findOne(id)
   }
 
@@ -52,7 +53,7 @@ export class RecadosController {
   }
 
   @Delete(':id')
-  romove(@Param('id') id: string) {
+  romove(@Param('id', ParseIntPipe) id: number) {
     this.recadosService.remove(id)
   }
 }

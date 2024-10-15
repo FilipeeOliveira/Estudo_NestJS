@@ -21,9 +21,9 @@ export class RecadosService {
     return this.recados
   }
 
-  findOne(id: string) {
+  findOne(id: number) {
     // o find() Procura o primeiro item de um array que atende a uma condição e te dá esse item.
-    return this.recados.find(item => item.id === +id) //para comverter o id string em number uso o +(mais) antes
+    return this.recados.find(item => item.id === id) //para comverter o id string em number uso o +(mais) antes
   }
 
 
@@ -58,10 +58,10 @@ export class RecadosService {
     return recadoExistenteIndex
   }
 
-  remove(id: string) {
+  remove(id: number) {
     // o findIndex() basicamente encontra e retornar o indice
     const recadosExistenteIndex = this.recados.findIndex(
-      item => item.id === +id,
+      item => item.id === id,
     )
     if (recadosExistenteIndex >= 0) {
       this.recados.splice(recadosExistenteIndex, 1)

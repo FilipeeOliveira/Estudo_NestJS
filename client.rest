@@ -24,8 +24,7 @@ PATCH  {{baseUrl}}/recados/2/
 Content-Type: application/json
 
 {
-    "texto": "olaaaa",
-    "blaba":"osososad"
+    "texto": "olaaaa"
 }
 
 ### Apaga um recado

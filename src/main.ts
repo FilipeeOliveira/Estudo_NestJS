@@ -6,7 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, //remove chaves que nao estão no meu DTO
-    forbidNonWhitelisted: true //levanta o erro quando a chave nao existir
+    forbidNonWhitelisted: true, //levanta o erro quando a chave nao existir
+    transform: true, //tenta transformar os tipos de dados de pararm e dtos
   }))
   await app.listen(3000);
 }
