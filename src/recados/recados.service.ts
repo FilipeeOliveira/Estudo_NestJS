@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { RecadoEntity } from './entities/recado.entity';
+import { CreateRecadoDto } from './dto/create-recado.dto';
+import { UpdateRecadoDto } from './dto/update-recado.dto';
 
 @Injectable()
 export class RecadosService {
@@ -25,19 +27,21 @@ export class RecadosService {
   }
 
 
-  create(body: any) {
+  create(createRecadoDto: CreateRecadoDto) {
     this.lastId++
     const id = this.lastId
     const novoRecado = {
       id,
-      ...body
+      ...createRecadoDto,
+      lido: false,
+      data: new Date(),
     }
     this.recados.push(novoRecado)
 
     return novoRecado
   }
 
-  update(id: string, body: any) {
+  update(id: string, updateRecadoDto: UpdateRecadoDto) {
     const recadoExistenteIndex = this.recados.findIndex(
       item => item.id === +id
     )
@@ -48,10 +52,10 @@ export class RecadosService {
       //Isso significa que as propriedades em body vão sobrescrever as existentes em recadoExistente, se houver alguma que tenha o mesmo nome.
       this.recados[recadoExistenteIndex] = {
         ...recadoExistente,
-        ...body
+        ...updateRecadoDto
       }
-
     }
+    return recadoExistenteIndex
   }
 
   remove(id: string) {
