@@ -8,6 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { RecadosService } from './recados.service';
 
 // CRUD
 // Creat -> POST -> Criar um recado
@@ -21,15 +22,18 @@ import {
 
 @Controller('recados')
 export class RecadosController {
+  constructor(private readonly recadosService: RecadosService) { }
+
   @Get()
   findAll(@Query() pagination: any) {
     const { limit = 10, offset = 0 } = pagination;
-    return `Retornar todos os recados. Limite=${limit}, Offset=${offset}.`;
+    //return `Retornar todos os recados. Limite=${limit}, Offset=${offset}.`;
+    return this.recadosService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `Essa rota retorna o recado ${id}`;
+    return this.recadosService.findOne(id)
   }
 
   @Post()

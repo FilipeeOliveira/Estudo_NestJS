@@ -7,25 +7,31 @@ GET {{baseUrl}}/recados/
 #&user=filipe
 
 ###Lista apenas um recado
-GET {{baseUrl}}/recados/121
+GET {{baseUrl}}/recados/1/
 
 ### Cria um recado
-POST  {{baseUrl}}/recados
+POST  {{baseUrl}}/recados/
 Content-Type: application/json
 
 {
-    "recado": "Este é o recado que estou enviado",
-    "nova chave": "Outro valor"
-}
+    "texto": "NOVO recado",
+    "de": "Joana",
+    "para": "Joao",
+    "lido": false,
+    "data": "2024-10-15T12:51:01.150Z"
+  }
 
 #### Atualiza um recado
-PATCH  {{baseUrl}}/recados/1/
+PATCH  {{baseUrl}}/recados/2/
 Content-Type: application/json
 
 {
-    "recado": "Este é o recado que estou enviado",
-    "Atualizar": true
-}
+    "texto": "Este é um recado de test",
+    "de": "Joana",
+    "para": "Joao",
+    "lido": false,
+    "data": "2024-10-15T12:51:01.150Z"
+  }
 
 ### Apaga um recado
-DELETE {{baseUrl}}/recados/121
+DELETE {{baseUrl}}/recados/2/
