@@ -20,12 +20,12 @@ Content-Type: application/json
   }
 
 #### Atualiza um recado
-PATCH  {{baseUrl}}/recados/2/
+PATCH  {{baseUrl}}/recados/3/
 Content-Type: application/json
 
 {
-    "texto": "olaaaa"
+    "texto": "ou meu deus o que eu fiz"
 }
 
 ### Apaga um recado
-DELETE {{baseUrl}}/recados/2/
+DELETE {{baseUrl}}/recados/1/
