@@ -29,3 +29,45 @@ Content-Type: application/json
 
 ### Apaga um recado
 DELETE {{baseUrl}}/recados/1/
+
+
+#####################################################################
+
+##Pessoas
+GET {{baseUrl}}/pessoas/
+#?limit=10
+#&offset=10
+#&user=filipe
+
+###Lista apenas uma pessoa
+GET {{baseUrl}}/pessoas/2/
+
+### Cria uma pessoa
+POST  {{baseUrl}}/pessoas/
+Content-Type: application/json
+
+  {
+   "email": "letin.jx.20@gmail.com",
+   "password": "123456",
+   "nome": "Filipe Oliveira"
+  }
+
+#### Atualiza um recado
+PATCH  {{baseUrl}}/pessoas/8/
+Content-Type: application/json
+
+{
+    "password": "senha123",
+    "nome": "Camile"
+}
+
+### Apaga um recado
+DELETE {{baseUrl}}/pessoas/6/
+
+
+
+
+
+
+
+
