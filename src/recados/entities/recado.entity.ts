@@ -1,4 +1,10 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class RecadoEntity {
@@ -6,10 +12,8 @@ export class RecadoEntity {
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
-
   texto: string;
   @Column({ type: 'varchar', length: 50 })
-
   de: string;
   @Column({ type: 'varchar', length: 50 })
   para: string;
@@ -21,8 +25,8 @@ export class RecadoEntity {
   data: Date;
 
   @CreateDateColumn()
-  createdAt?: Date
+  createdAt?: Date;
 
   @UpdateDateColumn()
-  updateAt?: Date
+  updateAt?: Date;
 }

@@ -9,4 +9,4 @@ import { RecadoEntity } from './entities/recado.entity';
   controllers: [RecadosController],
   providers: [RecadosService],
 })
-export class RecadosModule { }
+export class RecadosModule {}

@@ -30,7 +30,7 @@ import { UpdateRecadoDto } from './dto/update-recado.dto';
 
 @Controller('recados')
 export class RecadosController {
-  constructor(private readonly recadosService: RecadosService) { }
+  constructor(private readonly recadosService: RecadosService) {}
 
   @HttpCode(HttpStatus.OK)
   @Get()
@@ -42,21 +42,24 @@ export class RecadosController {
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.recadosService.findOne(id)
+    return this.recadosService.findOne(id);
   }
 
   @Post()
   create(@Body() createRecadoDto: CreateRecadoDto) {
-    return this.recadosService.create(createRecadoDto)
+    return this.recadosService.create(createRecadoDto);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateRecadoDto: UpdateRecadoDto) {
-    this.recadosService.update(id, updateRecadoDto)
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateRecadoDto: UpdateRecadoDto,
+  ) {
+    this.recadosService.update(id, updateRecadoDto);
   }
 
   @Delete(':id')
   romove(@Param('id', ParseIntPipe) id: number) {
-    this.recadosService.remove(id)
+    this.recadosService.remove(id);
   }
 }
