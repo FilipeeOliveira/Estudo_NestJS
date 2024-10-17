@@ -13,10 +13,10 @@ GET {{baseUrl}}/recados/2/
 POST  {{baseUrl}}/recados/
 Content-Type: application/json
 
-{
+  {
     "texto": "NOVO recado",
-    "de": "Joana",
-    "para": "Joao"
+    "deId": 1,
+    "paraId": 1
   }
 
 #### Atualiza um recado

@@ -1,6 +1,7 @@
 import {
   IsNotEmpty,
   IsOptional,
+  IsPositive,
   IsString,
   MaxLength,
   MinLength,
@@ -13,4 +14,10 @@ export class CreateRecadoDto {
   @MaxLength(255)
   @IsOptional()
   readonly texto: string;
+
+  @IsPositive()
+  deId: number
+
+  @IsPositive()
+  paraId: number
 }

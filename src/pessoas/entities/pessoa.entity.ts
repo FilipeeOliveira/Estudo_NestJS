@@ -25,11 +25,11 @@ export class Pessoa {
 
   //Uma pessoa pode ter enviado muitos recados (como "de")
   //Esses recados sao relacionados ao campo "de" na entidade recado
-  @OneToMany(() => RecadoEntity, recado => recado.de)
+  @OneToMany(() => RecadoEntity, RecadoEntity => RecadoEntity.de)
   recadosEnviados: RecadoEntity[]
 
   //Uma pessoa pode ter recebido muitos recados (como "para")
   //Esses recados sao relacionados ao campo "para" na entidade recado
-  @OneToMany(() => RecadoEntity, recado => recado.para)
+  @OneToMany(() => RecadoEntity, RecadoEntity => RecadoEntity.para)
   recadosRecebidos: RecadoEntity[]
 }
