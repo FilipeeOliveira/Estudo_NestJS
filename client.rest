@@ -2,9 +2,8 @@
 
 ###RECADOS
 GET {{baseUrl}}/recados/
-#?limit=10
-#&offset=10
-#&user=filipe
+?limit=10
+&offset=0
 
 ###Lista apenas um recado
 GET {{baseUrl}}/recados/10/
