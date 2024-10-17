@@ -19,7 +19,22 @@ export class RecadosService {
   }
 
   async findAll() {
-    const recados = await this.recadoRepository.find();
+    const recados = await this.recadoRepository.find({
+      relations: ['de', 'para'],
+      order: {
+        id: 'desc'
+      },
+      select: {
+        de: {
+          id: true,
+          nome: true
+        },
+        para: {
+          id: true,
+          nome: true
+        }
+      }
+    });
     return recados;
   }
 
@@ -30,6 +45,20 @@ export class RecadosService {
       where: {
         id,
       },
+      relations: ['de', 'para'],
+      order: {
+        id: 'desc'
+      },
+      select: {
+        de: {
+          id: true,
+          nome: true
+        },
+        para: {
+          id: true,
+          nome: true
+        }
+      }
     });
 
     if (recado) return recado;
@@ -53,22 +82,26 @@ export class RecadosService {
     };
 
     const recado = await this.recadoRepository.create(novoRecado);
+    await this.recadoRepository.save(recado);
 
-    return this.recadoRepository.save(recado);
+    return {
+      ...recado,
+      de: {
+        id: recado.de.id
+      },
+      para: {
+        id: recado.para.id
+      }
+    }
   }
 
   async update(id: number, updateRecadoDto: UpdateRecadoDto) {
-    const partialUpdateRecadoDto = {
-      lido: updateRecadoDto?.lido,
-      texto: updateRecadoDto?.texto,
-    };
-    const recado = await this.recadoRepository.preload({
-      id,
-      ...partialUpdateRecadoDto,
-    });
+    const recado = await this.findOne(id)
 
-    if (!recado) return this.throwNotFoundError();
-    return this.recadoRepository.save(recado);
+    recado.texto = updateRecadoDto?.texto ?? recado.texto
+    recado.lido = updateRecadoDto?.lido ?? recado.lido
+    await this.recadoRepository.save(recado)
+    return recado
   }
 
   async remove(id: number) {
