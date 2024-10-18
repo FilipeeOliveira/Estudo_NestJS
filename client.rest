@@ -2,7 +2,7 @@
 
 ###RECADOS
 GET {{baseUrl}}/recados/
-?limit=2
+?limit=5
 &offset=0
 
 ###Lista apenas um recado
