@@ -17,6 +17,7 @@ import { RecadosService } from './recados.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { AuthTokenInterceptor } from 'src/common/interceptors/auth-token.interceptor';
 
 // CRUD
 // Creat -> POST -> Criar um recado
@@ -31,6 +32,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 //DTO - Data Transfer Object -> Objeto de transferência
 //DTO - Objeto simples -> Validar dados / Transformar dados
 
+@UseInterceptors(AuthTokenInterceptor)
 @Controller('recados')
 export class RecadosController {
   constructor(private readonly recadosService: RecadosService) { }
