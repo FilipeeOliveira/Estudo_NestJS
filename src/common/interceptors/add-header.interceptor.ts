@@ -6,7 +6,6 @@ export class AddHeaderInterceptor implements NestInterceptor {
   intercept(
     context: ExecutionContext,
     next: CallHandler<any>): Observable<any> | Promise<Observable<any>> {
-    console.log('AddInterceptor Excutado my friend')
 
     const response = context.switchToHttp().getResponse()
 

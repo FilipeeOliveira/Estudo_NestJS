@@ -25,7 +25,6 @@ export class PessoasService {
       await this.pessoaRepository.save(novaPessoa)
       return novaPessoa
     } catch (error) {
-      console.log(error)
       if (error.code === '23505') { //aqui basicamente to capturando o erro com o codigo dele, e informando que o email ja foi cadastro com um if
         throw new ConflictException('E-mail já está cadastrado')
       }

@@ -7,7 +7,6 @@ export class ChangeDataInterceptor implements NestInterceptor {
   private readonly cache = new Map()
 
   async intercept(context: ExecutionContext, next: CallHandler<any>) {
-    //console.log('ChangeDataInterceptor Excutado my friend ANTES')
 
 
     return next.handle().pipe(

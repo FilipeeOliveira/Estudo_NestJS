@@ -3,7 +3,6 @@ import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from
 @Injectable()
 export class ParseIntIdPipe implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata) {
-    //console.log('Piper executado my friend')
     if (metadata.type !== 'param' || metadata.data !== 'id') {
       return value
     }

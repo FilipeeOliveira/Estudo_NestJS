@@ -41,10 +41,9 @@ import { isAdminGuard } from 'src/common/guards/is-admin.guard';
 export class RecadosController {
   constructor(private readonly recadosService: RecadosService) { }
 
-  @UseGuards(isAdminGuard)
+
   @Get()
   async findAll(@Query() paginationDto: PaginationDto, @Req() req: Request) {
-    console.log('RecadosController', req['user'])
 
     const recados = await this.recadosService.findAll(paginationDto);
 
@@ -53,7 +52,6 @@ export class RecadosController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    console.log(id, typeof id)
     return this.recadosService.findOne(id);
   }
 
