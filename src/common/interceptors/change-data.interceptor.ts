@@ -1,7 +1,8 @@
-import { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common"
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common"
 
 import { map } from "rxjs"
 
+@Injectable()
 export class ChangeDataInterceptor implements NestInterceptor {
   private readonly cache = new Map()
 

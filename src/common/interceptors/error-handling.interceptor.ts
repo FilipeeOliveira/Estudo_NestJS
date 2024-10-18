@@ -1,6 +1,7 @@
-import { BadRequestException, CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common"
+import { BadRequestException, CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common"
 import { catchError, tap, throwError } from "rxjs"
 
+@Injectable()
 export class ErroHanlingInterceptor implements NestInterceptor {
   async intercept(context: ExecutionContext, next: CallHandler<any>) {
     console.log('ErroHanlingInterceptor Excutado my friend ANTES')
