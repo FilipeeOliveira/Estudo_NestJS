@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { RecadoEntity } from './entities/recado.entity';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
@@ -6,13 +6,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PessoasService } from 'src/pessoas/pessoas.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { RecadosUtils } from './recados.utils';
 
 @Injectable()
 export class RecadosService {
   constructor(
     @InjectRepository(RecadoEntity)
     private readonly recadoRepository: Repository<RecadoEntity>,
-    private readonly pessoasService: PessoasService
+    private readonly pessoasService: PessoasService,
+    private readonly recadosUtils: RecadosUtils
   ) { }
 
   throwNotFoundError() {
@@ -44,6 +46,7 @@ export class RecadosService {
   }
 
   async findOne(id: number) {
+    console.log(this.recadosUtils.inverteString('iatecam'))
     // o find() Procura o primeiro item de um array que atende a uma condição e te dá esse item.
     //return this.recados.find(item => item.id === id) //para comverter o id string em number uso o +(mais) antes
     const recado = await this.recadoRepository.findOne({

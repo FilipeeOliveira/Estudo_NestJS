@@ -14,6 +14,7 @@ import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ReqDataParam } from 'src/common/params/req-data-param.decorator';
+import { RecadosUtils } from './recados.utils';
 
 // CRUD
 // Creat -> POST -> Criar um recado
@@ -30,7 +31,8 @@ import { ReqDataParam } from 'src/common/params/req-data-param.decorator';
 
 @Controller('recados')
 export class RecadosController {
-  constructor(private readonly recadosService: RecadosService) { }
+  constructor(private readonly recadosService: RecadosService,
+    private readonly recadosUtils: RecadosUtils) { }
 
 
   @Get()
@@ -43,7 +45,10 @@ export class RecadosController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
+    console.log(this.recadosUtils.inverteString('iatecam'))
+
     return this.recadosService.findOne(id);
+
   }
 
   @Post()
