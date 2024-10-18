@@ -29,7 +29,7 @@ Content-Type: application/json
 }
 
 ### Apaga um recado
-DELETE {{baseUrl}}/recados/1/
+DELETE {{baseUrl}}/recados/23/
 
 
 #####################################################################
