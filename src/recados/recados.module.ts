@@ -12,10 +12,6 @@ import { MyDynamicModule } from 'src/my-dynamic/my-dynamic.module';
 @Module({
   imports: [TypeOrmModule.forFeature([RecadoEntity]),
   forwardRef(() => PessoasModule),
-  MyDynamicModule.register({
-    apiKey: 'Aqui vem a API KEY',
-    apiUrl: 'Aqui vem a API URL'
-  })
   ],
   controllers: [RecadosController],
   providers: [

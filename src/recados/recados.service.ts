@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { RecadoEntity } from './entities/recado.entity';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
@@ -6,15 +6,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PessoasService } from 'src/pessoas/pessoas.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { RecadosUtils } from './recados.utils';
 
-@Injectable()
+//Scope.DEFAULT -> O provider em questao é um singleton
+//Scope.REQUEST -> O provider em questao é instaciado a cada requisicao
+//Scope.TRANSIENT -> É criada uma instacia do provider para cada classe que injetar esse provider
+
+@Injectable({ scope: Scope.DEFAULT })
 export class RecadosService {
+  private count = 0
+
   constructor(
     @InjectRepository(RecadoEntity)
     private readonly recadoRepository: Repository<RecadoEntity>,
     private readonly pessoasService: PessoasService,
-  ) { }
+  ) {
+    this.count++
+    console.log(`RecadoService ${this.count}`)
+  }
 
   throwNotFoundError() {
     throw new NotFoundException('Recado não encontrado');

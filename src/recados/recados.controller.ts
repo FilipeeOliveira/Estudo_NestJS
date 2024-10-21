@@ -33,11 +33,7 @@ import { MY_DYNAMIC_CONFIG, MyDynamicModuleConfigs } from 'src/my-dynamic/my-dyn
 export class RecadosController {
   constructor(
     private readonly recadosService: RecadosService,
-    @Inject(MY_DYNAMIC_CONFIG)
-    private readonly myDynamicConfigs: MyDynamicModuleConfigs
-  ) {
-    console.log(this.myDynamicConfigs)
-  }
+  ) { }
 
 
   @Get()

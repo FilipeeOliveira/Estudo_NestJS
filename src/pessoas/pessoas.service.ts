@@ -7,10 +7,15 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class PessoasService {
+  private count = 0
+
   constructor(
     @InjectRepository(Pessoa)
     private readonly pessoaRepository: Repository<Pessoa> //basicamento isso é o banco de dados
-  ) { }
+  ) {
+    this.count++
+    console.log(`PessoaService ${this.count}`)
+  }
 
   async create(createPessoaDto: CreatePessoaDto) {
     try {
@@ -44,6 +49,8 @@ export class PessoasService {
   }
 
   async findOne(id: number) {
+    this.count++
+    console.log(`PessoasService: ${this.count} - findOne`)
     const pessoa = await this.pessoaRepository.findOneBy({
       id,
     });
