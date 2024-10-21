@@ -1,1 +1,0 @@
-export const Serve_Name = 'Serve_Name'
