@@ -4,42 +4,40 @@ import { RecadosService } from './recados.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecadoEntity } from './entities/recado.entity';
 import { PessoasModule } from 'src/pessoas/pessoas.module';
-import { RecadosUtils, RecadosUtilsMock } from './recados.utils';
-import { ONLY_LOWERCASE_LETTERS_REGEX, REMOVE_SPACES_REGEX, Serve_Name } from 'src/recados/recados.constants';
-import { RegexProtocol } from 'src/common/regex/regex-protocol';
+import { RecadosUtils } from './recados.utils';
+import { RegexFactory } from 'src/common/regex/regex.factory';
+import { ONLY_LOWERCASE_LETTERS_REGEX, REMOVE_SPACES_REGEX } from './recados.constants';
 import { RemoveSpacesRegex } from 'src/common/regex/remove-spaces.regex';
-import { OnlyLowercaseLettersRegex } from 'src/common/regex/only-lowercase-letters.regex';
+import { resolve } from 'path';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RecadoEntity]),
-  forwardRef(() => PessoasModule)],
+  forwardRef(() => PessoasModule)
+  ],
   controllers: [RecadosController],
   providers: [
     RecadosService,
+    RecadosUtils,
+    RegexFactory,
     {
-      provide: RecadosUtils, //token
-      //useClass: RecadosUtils,
-      useValue: new RecadosUtilsMock(), //Valor a ser usado (para testes e tals)
+      provide: REMOVE_SPACES_REGEX, //token
+      useFactory: (regexFactory: RegexFactory) => {
+        return regexFactory.create('RemoveSpacesRegex')
+      }, //Factory
+      inject: [RegexFactory] //Injetando na factory na ordem
     },
     {
-      provide: Serve_Name,
-      useValue: 'My name is NestJs'
-    },
-    {
-      provide: ONLY_LOWERCASE_LETTERS_REGEX,
-      useClass: OnlyLowercaseLettersRegex
-    },
-    {
-      provide: REMOVE_SPACES_REGEX,
-      useClass: RemoveSpacesRegex
+      provide: ONLY_LOWERCASE_LETTERS_REGEX, //token
+      useFactory: async (regexFactory: RegexFactory) => {
+        //espera alguma coisa acontecer
+        console.log('VOu aguardar a promise ser resolvida')
+        await new Promise(resolve => setTimeout(resolve, 3000))
+
+        return regexFactory.create('OnlyLowercaseLettersRegex')
+      }, //Factory
+      inject: [RegexFactory] //Injetando na factory na ordem
     }
   ],
-  exports: [
-    {
-      provide: RecadosUtils,
-      useClass: RecadosUtils,
-    },
-    Serve_Name
-  ],
+  exports: [RecadosUtils],
 })
 export class RecadosModule { }

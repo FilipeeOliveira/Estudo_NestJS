@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -16,10 +15,9 @@ import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ReqDataParam } from 'src/common/params/req-data-param.decorator';
 import { RecadosUtils } from './recados.utils';
-import { ONLY_LOWERCASE_LETTERS_REGEX, REMOVE_SPACES_REGEX, Serve_Name } from 'src/recados/recados.constants';
-import { RegexProtocol } from 'src/common/regex/regex-protocol';
 import { RemoveSpacesRegex } from 'src/common/regex/remove-spaces.regex';
-
+import { ONLY_LOWERCASE_LETTERS_REGEX, REMOVE_SPACES_REGEX } from './recados.constants';
+import { OnlyLowercaseLettersRegex } from 'src/common/regex/only-lowercase-letters.regex';
 // CRUD
 // Creat -> POST -> Criar um recado
 // Read -> GET -> Ler todos os recados
@@ -37,29 +35,23 @@ import { RemoveSpacesRegex } from 'src/common/regex/remove-spaces.regex';
 export class RecadosController {
   constructor(
     private readonly recadosService: RecadosService,
-    private readonly recadosUtils: RecadosUtils,
-    @Inject(Serve_Name)
-    private readonly serverName: string,
     @Inject(REMOVE_SPACES_REGEX)
-    private readonly removeSpacesRegex: RegexProtocol,
+    private readonly removeSpacesRegex: RemoveSpacesRegex,
     @Inject(ONLY_LOWERCASE_LETTERS_REGEX)
-    private readonly onlyLowerCaseLettersRegex: RegexProtocol
+    private readonly onlyLowercaseLettersRegex: OnlyLowercaseLettersRegex
   ) { }
 
 
   @Get()
   async findAll(@Query() paginationDto: PaginationDto, @ReqDataParam('url') url) {
-    console.log(this.removeSpacesRegex.execute(this.serverName))
-    console.log(this.onlyLowerCaseLettersRegex.execute(this.serverName))
-    console.log(this.serverName)
+    console.log(this.removeSpacesRegex.execute('REMOVE OS ESPACOS'))
+    console.log(this.onlyLowercaseLettersRegex.execute('REMOVE letra minuscula'))
     const recados = await this.recadosService.findAll(paginationDto);
     return recados
   }
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    console.log(this.recadosUtils.inverteString('iatecam'))
-
     return this.recadosService.findOne(id);
 
   }

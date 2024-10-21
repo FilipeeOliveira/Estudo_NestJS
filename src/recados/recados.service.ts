@@ -14,7 +14,6 @@ export class RecadosService {
     @InjectRepository(RecadoEntity)
     private readonly recadoRepository: Repository<RecadoEntity>,
     private readonly pessoasService: PessoasService,
-    private readonly recadosUtils: RecadosUtils
   ) { }
 
   throwNotFoundError() {
@@ -46,7 +45,6 @@ export class RecadosService {
   }
 
   async findOne(id: number) {
-    console.log(this.recadosUtils.inverteString('iatecam'))
     // o find() Procura o primeiro item de um array que atende a uma condição e te dá esse item.
     //return this.recados.find(item => item.id === id) //para comverter o id string em number uso o +(mais) antes
     const recado = await this.recadoRepository.findOne({
