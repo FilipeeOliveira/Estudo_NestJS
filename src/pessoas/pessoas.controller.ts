@@ -6,14 +6,21 @@ import {
   Patch,
   Param,
   Delete,
+  Inject,
 } from '@nestjs/common';
 import { PessoasService } from './pessoas.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
+import { RecadosUtils } from 'src/recados/recados.utils';
+import { Serve_Name } from 'src/common/constants/serve-name.constants';
 
 @Controller('pessoas')
 export class PessoasController {
-  constructor(private readonly pessoasService: PessoasService) {}
+  constructor(private readonly pessoasService: PessoasService,
+    private readonly recadosUtils: RecadosUtils,
+    @Inject(Serve_Name)
+    private readonly serveName: string
+  ) { }
 
   @Post()
   create(@Body() createPessoaDto: CreatePessoaDto) {
@@ -22,6 +29,8 @@ export class PessoasController {
 
   @Get()
   findAll() {
+    console.log(this.serveName)
+    console.log(this.recadosUtils.inverteString('iatecam'))
     return this.pessoasService.findAll();
   }
 

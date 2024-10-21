@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
@@ -15,6 +16,7 @@ import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ReqDataParam } from 'src/common/params/req-data-param.decorator';
 import { RecadosUtils } from './recados.utils';
+import { Serve_Name } from 'src/common/constants/serve-name.constants';
 
 // CRUD
 // Creat -> POST -> Criar um recado
@@ -31,14 +33,17 @@ import { RecadosUtils } from './recados.utils';
 
 @Controller('recados')
 export class RecadosController {
-  constructor(private readonly recadosService: RecadosService,
-    private readonly recadosUtils: RecadosUtils) { }
+  constructor(
+    private readonly recadosService: RecadosService,
+    private readonly recadosUtils: RecadosUtils,
+    @Inject(Serve_Name)
+    private readonly serverName: string) { }
 
 
   @Get()
   async findAll(@Query() paginationDto: PaginationDto, @ReqDataParam('url') url) {
     console.log(url)
-
+    console.log(this.serverName)
     const recados = await this.recadosService.findAll(paginationDto);
     return recados
   }
