@@ -4,14 +4,16 @@ import { AppService } from './app.service';
 import { RecadosModule } from './recados/recados.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PessoasModule } from './pessoas/pessoas.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from '@hapi/joi'
+import appConfig from './app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       //envFilePath: '.env', //se eu quiser sleecionar o local do arquivo eu consigo 
       //ignoreEnvFile: true, // se eu quiser ignorar os arquivos .env
+      load: [appConfig],
       validationSchema: Joi.object({
         DATABASE_TYPE: Joi.required(),
         DATABASE_HOST: Joi.required(),
@@ -22,17 +24,26 @@ import * as Joi from '@hapi/joi'
         DATABASE_AUTOLOADENTITIES: Joi.number().min(0).max(1).default(0),
         DATABASE_SYNCHRONIZE: Joi.number().min(0).max(1).default(0),
       })
-    }),
-    TypeOrmModule.forRoot({
-      type: process.env.DATABASE_TYPE as 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: +process.env.DATABASE_PORT,
-      username: process.env.DATABASE_USERNAME,
-      database: process.env.DATABASE_DATABASE,
-      password: process.env.DATABASE_PASSWORD,
-      autoLoadEntities: Boolean(process.env.DATABASE_AUTOLOADENTITIES), // Carrega entidades sem precisar especifica-las
-      synchronize: Boolean(process.env.DATABASE_SYNCHRONIZE), // Sincroniza com o BD. Não deve ser usado em producao!
-    }),
+    }), TypeOrmModule.forRootAsync(
+      {
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: async (configService: ConfigService) => {
+          console.log('TypeOrmModule', configService.get('environment'))
+
+          return {
+            type: configService.get<'postgres'>('database.type'),
+            host: configService.get<string>('database.host'),
+            port: configService.get<number>('database.port'),
+            username: configService.get<string>('database.username'),
+            database: configService.get<string>('database.database'),
+            password: configService.get<string>('database.password'),
+            autoLoadEntities: configService.get<boolean>('database.autoLoadEntities'),
+            synchronize: configService.get<boolean>('database.synchronize'),
+          }
+        }
+      },
+    ),
     RecadosModule,
     PessoasModule,
   ],
