@@ -41,25 +41,24 @@ GET {{baseUrl}}/pessoas/
 #&user=filipe
 
 ###Lista apenas uma pessoa
-GET {{baseUrl}}/pessoas/2/
+GET {{baseUrl}}/pessoas/12/
 
 ### Cria uma pessoa
 POST  {{baseUrl}}/pessoas/
 Content-Type: application/json
 
   {
-   "email": "filipe.jx.20@gmail.com",
+   "email": "becca.jx.20@gmail.com",
    "password": "123456",
    "nome": "Filipe Oliveira"
   }
 
 #### Atualiza um recado
-PATCH  {{baseUrl}}/pessoas/8/
+PATCH  {{baseUrl}}/pessoas/12/
 Content-Type: application/json
 
 {
-    "password": "senha123",
-    "nome": "Camile"
+    "password": "senha1234"
 }
 
 ### Apaga um recado

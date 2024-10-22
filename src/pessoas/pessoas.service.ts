@@ -4,6 +4,7 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Pessoa } from './entities/pessoa.entity';
 import { Repository } from 'typeorm';
+import { HashingService } from 'src/auth/hashing/hashing.service';
 
 @Injectable()
 export class PessoasService {
@@ -11,7 +12,8 @@ export class PessoasService {
 
   constructor(
     @InjectRepository(Pessoa)
-    private readonly pessoaRepository: Repository<Pessoa> //basicamento isso é o banco de dados
+    private readonly pessoaRepository: Repository<Pessoa>, //basicamento isso é o banco de dados
+    private readonly hashingService: HashingService
   ) {
     this.count++
     console.log(`PessoaService ${this.count}`)
@@ -19,9 +21,13 @@ export class PessoasService {
 
   async create(createPessoaDto: CreatePessoaDto) {
     try {
+      const passwordHash = await this.hashingService.hash(
+        createPessoaDto.password,
+      )
+
       const dadosPessoa = {
         nome: createPessoaDto.nome,
-        passwordHash: createPessoaDto.password,
+        passwordHash,
         email: createPessoaDto.email
       }
 
@@ -64,9 +70,16 @@ export class PessoasService {
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
     const dadosPessoa = {
-      nome: updatePessoaDto?.nome,  /// basicamaente esse diacho e a atualizacao do user, sendo opcional e dai ele armazena numa variavel
-      passwordHash: updatePessoaDto?.password,
+      nome: updatePessoaDto?.nome,  /// basicamaente esse diacho e a atualizacao do user, sendo opcional e dai ele armazena numa variavel   
     }
+    if (updatePessoaDto?.password) {
+      const passwordHash = await this.hashingService.hash(
+        updatePessoaDto.password
+      )
+
+      dadosPessoa['passwordHash'] = passwordHash
+    }
+
     const pessoa = await this.pessoaRepository.preload({
       id,
       ...dadosPessoa

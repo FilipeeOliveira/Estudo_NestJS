@@ -7,6 +7,7 @@ import { PessoasModule } from './pessoas/pessoas.module';
 import { ConfigModule, ConfigType } from '@nestjs/config';
 import { GlobalConfigModule } from './global-config/global-config.module';
 import globalConfig from './global-config/global.config';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -35,6 +36,7 @@ import globalConfig from './global-config/global.config';
     RecadosModule,
     PessoasModule,
     GlobalConfigModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
