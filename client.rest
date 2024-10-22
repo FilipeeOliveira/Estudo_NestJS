@@ -65,9 +65,17 @@ Content-Type: application/json
 DELETE {{baseUrl}}/pessoas/1/
 
 
+#####################################################################
 
+## AUTH
+POST {{baseUrl}}/auth
+Content-Type: application/json
 
-
+  {
+    "email": "teste@gmail.com",
+    "password": "123456"
+  }
+ 
 
 
 
