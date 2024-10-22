@@ -5,23 +5,23 @@
 GET {{baseUrl}}/recados/
 ?limit=5
 &offset=0
-Authorization: Bearer 123456
 
 ###Lista apenas um recado
 GET {{baseUrl}}/recados/23/
 
 ### Cria um recado
 POST  {{baseUrl}}/recados/
+Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
   {
     "texto": "NOVO recado",
-    "deId": 10,
     "paraId": 8
   }
 
 #### Atualiza um recado
 PATCH  {{baseUrl}}/recados/11/
+Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
@@ -31,6 +31,7 @@ Content-Type: application/json
 
 ### Apaga um recado
 DELETE {{baseUrl}}/recados/23/
+Authorization: Bearer {{authToken}}
 
 
 #####################################################################
@@ -57,16 +58,16 @@ Content-Type: application/json
   }
 
 #### Atualiza um recado
-PATCH  {{baseUrl}}/pessoas/12/
+PATCH  {{baseUrl}}/pessoas/14/
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-    "password": "senha1234"
+    "password": "senha123"
 }
 
 ### Apaga uma pessoa
-DELETE {{baseUrl}}/pessoas/1/
+DELETE {{baseUrl}}/pessoas/12/
 Authorization: Bearer {{authToken}}
 
 
@@ -81,7 +82,7 @@ Content-Type: application/json
 
   {
     "email": "filipe.jx.10@gmail.com",
-    "password": "123456"
+    "password": "senha123"
   }
  
 

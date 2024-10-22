@@ -17,7 +17,6 @@ import { TokenPayloadParam } from 'src/auth/params/token-payload.param';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 
 
-@UseGuards(AuthTokenGuard)
 @Controller('pessoas')
 export class PessoasController {
   constructor(private readonly pessoasService: PessoasService,
