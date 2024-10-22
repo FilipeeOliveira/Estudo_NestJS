@@ -4,7 +4,7 @@
 GET {{baseUrl}}/recados/
 ?limit=5
 &offset=0
-Authorization: :Bearer 123456
+Authorization: Bearer 123456
 
 ###Lista apenas um recado
 GET {{baseUrl}}/recados/23/
@@ -39,6 +39,7 @@ GET {{baseUrl}}/pessoas/
 #?limit=10
 #&offset=10
 #&user=filipe
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0LCJlbWFpbCI6ImZpbGlwZS5qeC4xMEBnbWFpbC5jb20iLCJpYXQiOjE3Mjk2MDkyMzIsImV4cCI6MTcyOTYxMjgzMiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.MramppvWjIBZ7wN0oDqCe1VGeW_gNuad87Kp5F4ZibM
 
 ###Lista apenas uma pessoa
 GET {{baseUrl}}/pessoas/12/
@@ -48,7 +49,7 @@ POST  {{baseUrl}}/pessoas/
 Content-Type: application/json
 
   {
-   "email": "becca.jx.20@gmail.com",
+   "email": "filipe.jx.10@gmail.com",
    "password": "123456",
    "nome": "Filipe Oliveira"
   }
@@ -72,7 +73,7 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
   {
-    "email": "teste@gmail.com",
+    "email": "filipe.jx.10@gmail.com",
     "password": "123456"
   }
  
