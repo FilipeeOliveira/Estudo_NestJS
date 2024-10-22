@@ -1,10 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Pessoa } from './entities/pessoa.entity';
 import { Repository } from 'typeorm';
 import { HashingService } from 'src/auth/hashing/hashing.service';
+import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 
 @Injectable()
 export class PessoasService {
@@ -68,7 +69,7 @@ export class PessoasService {
     return pessoa;
   }
 
-  async update(id: number, updatePessoaDto: UpdatePessoaDto) {
+  async update(id: number, updatePessoaDto: UpdatePessoaDto, tokenPayload: TokenPayloadDto) {
     const dadosPessoa = {
       nome: updatePessoaDto?.nome,  /// basicamaente esse diacho e a atualizacao do user, sendo opcional e dai ele armazena numa variavel   
     }
@@ -89,16 +90,19 @@ export class PessoasService {
       throw new NotFoundException('Pessoa não encontrada')
     }
 
+
+    if (pessoa.id !== tokenPayload.sub) {
+      throw new ForbiddenException('Você nao é essa pessoa')
+    }
+
     return this.pessoaRepository.save(pessoa)
   }
 
-  async remove(id: number) {
-    const pessoa = await this.pessoaRepository.findOneBy({
-      id
-    })
+  async remove(id: number, tokenPayload: TokenPayloadDto) {
+    const pessoa = await this.findOne(id)
 
-    if (!pessoa) {
-      throw new NotFoundException('Pessoa não encontrada')
+    if (pessoa.id !== tokenPayload.sub) {
+      throw new ForbiddenException('Você nao é essa pessoa')
     }
 
     return this.pessoaRepository.remove(pessoa)

@@ -1,4 +1,5 @@
 @baseUrl = http://localhost:3000 
+@authToken = {{authenticate.response.body.acessToken}}
 
 ###RECADOS
 GET {{baseUrl}}/recados/
@@ -39,10 +40,11 @@ GET {{baseUrl}}/pessoas/
 #?limit=10
 #&offset=10
 #&user=filipe
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0LCJlbWFpbCI6ImZpbGlwZS5qeC4xMEBnbWFpbC5jb20iLCJpYXQiOjE3Mjk2MDkyMzIsImV4cCI6MTcyOTYxMjgzMiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMDAwIn0.MramppvWjIBZ7wN0oDqCe1VGeW_gNuad87Kp5F4ZibM
+Authorization: Bearer {{authToken}}
 
 ###Lista apenas uma pessoa
 GET {{baseUrl}}/pessoas/12/
+Authorization: Bearer {{authToken}}
 
 ### Cria uma pessoa
 POST  {{baseUrl}}/pessoas/
@@ -56,19 +58,24 @@ Content-Type: application/json
 
 #### Atualiza um recado
 PATCH  {{baseUrl}}/pessoas/12/
+Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
     "password": "senha1234"
 }
 
-### Apaga um recado
+### Apaga uma pessoa
 DELETE {{baseUrl}}/pessoas/1/
+Authorization: Bearer {{authToken}}
 
 
 #####################################################################
 
 ## AUTH
+## AUTENTICAÇÃO
+
+# @name authenticate
 POST {{baseUrl}}/auth
 Content-Type: application/json
 
