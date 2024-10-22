@@ -8,11 +8,12 @@ import { RecadosUtils } from './recados.utils';
 import { RegexFactory } from 'src/common/regex/regex.factory';
 import { MyDynamicModule } from 'src/my-dynamic/my-dynamic.module';
 import { ConfigModule } from '@nestjs/config';
+import recadosConfig from './recados.config';
 
 
 @Module({
   imports: [
-    ConfigModule,
+    ConfigModule.forFeature(recadosConfig),
     TypeOrmModule.forFeature([RecadoEntity]),
     forwardRef(() => PessoasModule),
   ],
