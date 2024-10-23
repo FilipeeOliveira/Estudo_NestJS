@@ -17,7 +17,6 @@ export class PessoasService {
     private readonly hashingService: HashingService
   ) {
     this.count++
-    console.log(`PessoaService ${this.count}`)
   }
 
   async create(createPessoaDto: CreatePessoaDto) {
@@ -57,7 +56,6 @@ export class PessoasService {
 
   async findOne(id: number) {
     this.count++
-    console.log(`PessoasService: ${this.count} - findOne`)
     const pessoa = await this.pessoaRepository.findOneBy({
       id,
     });

@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Query,
+  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { RecadosService } from './recados.service';
@@ -31,6 +32,7 @@ import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
 
 //DTO - Data Transfer Object -> Objeto de transferência
 //DTO - Objeto simples -> Validar dados / Transformar dados
+
 
 @Controller('recados')
 export class RecadosController {
