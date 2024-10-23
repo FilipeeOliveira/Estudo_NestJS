@@ -15,7 +15,6 @@ import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ReqDataParam } from 'src/common/params/req-data-param.decorator';
-import { MY_DYNAMIC_CONFIG, MyDynamicModuleConfigs } from 'src/my-dynamic/my-dynamic.module';
 import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
 import { TokenPayloadParam } from 'src/auth/params/token-payload.param';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';

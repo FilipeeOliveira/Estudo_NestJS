@@ -24,10 +24,11 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const pessoa = await this.pessoaRepository.findOneBy({
       email: loginDto.email,
+      active: true
     });
 
     if (!pessoa) {
-      throw new UnauthorizedException('Pessoa não existe.');
+      throw new UnauthorizedException('Pessoa não autorizada.');
     }
 
     const passwordIsValid = await this.hashingService.compare(
@@ -84,7 +85,8 @@ export class AuthService {
 
       const pessoa = await this.pessoaRepository.findOneBy(
         {
-          id: sub
+          id: sub,
+          active: true,
         }
       )
 

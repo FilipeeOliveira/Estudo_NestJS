@@ -1,3 +1,4 @@
+import { boolean } from "@hapi/joi";
 import { IsEmail } from "class-validator";
 import { RecadoEntity } from "src/recados/entities/recado.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
@@ -32,4 +33,11 @@ export class Pessoa {
   //Esses recados sao relacionados ao campo "para" na entidade recado
   @OneToMany(() => RecadoEntity, RecadoEntity => RecadoEntity.para)
   recadosRecebidos: RecadoEntity[]
+
+  @Column({ default: true })
+  active: boolean
+
+
+
 }
+
