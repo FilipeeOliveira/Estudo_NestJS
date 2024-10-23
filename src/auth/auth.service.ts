@@ -7,6 +7,7 @@ import { HashingService } from "./hashing/hashing.service";
 import jwtConfig from "./config/jwt.config";
 import { ConfigType } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
+import { RefreshTokenDto } from "./dto/refresh-token.dto";
 
 @Injectable()
 export class AuthService {
@@ -38,21 +39,63 @@ export class AuthService {
       throw new UnauthorizedException('Senha inválida!');
     }
 
-    const acessToken = await this.jwtService.signAsync(
+    return this.createTokens(pessoa)
+  }
+
+  private async createTokens(pessoa: Pessoa) {
+    const acessToken = await this.signJwtAsync<Partial<Pessoa>>(
+      pessoa.id,
+      this.jwtConfiguration.jwtTtl,
+      { email: pessoa.email }
+    )
+
+    const refreshToken = await this.signJwtAsync(
+      pessoa.id,
+      this.jwtConfiguration.jwtRefreshTtl,
+    )
+
+    return {
+      acessToken,
+      refreshToken
+    };
+  }
+
+  private async signJwtAsync<T>(sub: number, expiresIn: number, payload?: T) {
+    return await this.jwtService.signAsync(
       {
-        sub: pessoa.id,
-        email: pessoa.email
+        sub,
+        ...payload,
       },
       {
         audience: this.jwtConfiguration.audience,
         issuer: this.jwtConfiguration.issuer,
         secret: this.jwtConfiguration.secret,
-        expiresIn: this.jwtConfiguration.jwtTtl
+        expiresIn,
       }
-    )
+    );
+  }
 
-    return {
-      acessToken,
-    };
+  async refreshTokens(refreshTokenDto: RefreshTokenDto) {
+    try {
+      const { sub } = await this.jwtService.verifyAsync(
+        refreshTokenDto.refreshToken,
+        this.jwtConfiguration
+      )
+
+      const pessoa = await this.pessoaRepository.findOneBy(
+        {
+          id: sub
+        }
+      )
+
+      if (!pessoa) {
+        throw new Error("Pessoa nao encontrada")
+      }
+
+      return this.createTokens(pessoa)
+
+    } catch (error) {
+      throw new UnauthorizedException(error.message)
+    }
   }
 }
