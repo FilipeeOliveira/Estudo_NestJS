@@ -53,7 +53,7 @@ POST  {{baseUrl}}/pessoas/
 Content-Type: application/json
 
   {
-   "email": "filipe.jx.10@gmail.com",
+   "email": "filipe@gmail.com",
    "password": "123456",
    "nome": "Filipe Oliveira"
   }
@@ -82,8 +82,8 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
   {
-    "email": "filipe.jx.10@gmail.com",
-    "password": "senha123"
+    "email": "filipe@gmail.com",
+    "password": "123456"
   }
 
 
