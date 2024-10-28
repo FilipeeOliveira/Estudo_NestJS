@@ -110,4 +110,10 @@ Content-Disposition: form-data; name="file"; filename="man.jpeg"
 Content-Type: image/jpeg
 
 < ./dev/images/man.jpeg
+
+------BoundaryDelimitadorHttp
+Content-Disposition: form-data; name="file"; filename="ibbi.jpeg"
+Content-Type: image/jpeg
+
+< ./dev/images/ibbi.jpeg
 ------BoundaryDelimitadorHttp--
