@@ -8,6 +8,8 @@ import { ConfigModule, ConfigType } from '@nestjs/config';
 import { GlobalConfigModule } from './global-config/global-config.module';
 import globalConfig from './global-config/global.config';
 import { AuthModule } from './auth/auth.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path'
 
 
 @Module({
@@ -27,12 +29,13 @@ import { AuthModule } from './auth/auth.module';
             password: globalConfiguration.database.password,
             autoLoadEntities: globalConfiguration.database.autoLoadEntities,
             synchronize: globalConfiguration.database.synchronize,
-
-
           }
         }
-      },
-    ),
+      }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, '..', 'pictures'),
+      serveRoot: '/pictures'
+    }),
     RecadosModule,
     PessoasModule,
     GlobalConfigModule,

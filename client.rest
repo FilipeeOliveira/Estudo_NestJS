@@ -117,3 +117,6 @@ Content-Type: image/jpeg
 
 < ./dev/images/ibbi.jpeg
 ------BoundaryDelimitadorHttp--
+
+###Ver foto
+GET {{baseUrl}}/pictures/4f8807f5-d293-4e5d-9b59-5339f13dfc77.jpeg
