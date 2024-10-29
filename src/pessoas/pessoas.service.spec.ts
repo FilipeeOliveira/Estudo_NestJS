@@ -1,19 +1,114 @@
+import { Repository } from 'typeorm';
+import { PessoasService } from './pessoas.service';
+import { Pessoa } from './entities/pessoa.entity';
+import { HashingService } from 'src/auth/hashing/hashing.service';
+import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { CreatePessoaDto } from './dto/create-pessoa.dto';
+import { ConflictException } from '@nestjs/common';
+
 describe('PessoasService', () => {
+  let pessoaService: PessoasService;
+  let pessoaRepository: Repository<Pessoa>;
+  let hashingService: HashingService;
+
   beforeEach(async () => {
-    // console.log('Isso será executado antes de cada teste');
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        PessoasService,
+        {
+          provide: getRepositoryToken(Pessoa),
+          useValue: {
+            save: jest.fn(),
+            create: jest.fn(),
+          },
+        },
+        {
+          provide: HashingService,
+          useValue: {
+            hash: jest.fn(),
+          },
+        },
+      ],
+    }).compile();
+
+    pessoaService = module.get<PessoasService>(PessoasService);
+    pessoaRepository = module.get<Repository<Pessoa>>(
+      getRepositoryToken(Pessoa),
+    );
+    hashingService = module.get<HashingService>(HashingService);
   });
 
-  // Caso - Teste
-  it('deve somar o numero1 e o numero2 e resultar em 3', () => {
-    // Configurar - Arrange
-    const numero1 = 1;
-    const numero2 = 2;
+  it('pessoaService deve estar definido', () => {
+    expect(pessoaService).toBeDefined();
+  });
 
-    // Fazer alguma ação - Act
-    const result = numero1 + numero2;
+  describe('create', () => {
+    it('deve criar uma nova pessoa', async () => {
+      // Arange
+      const createPessoaDto: CreatePessoaDto = {
+        email: 'luiz@email.com',
+        nome: 'Luiz',
+        password: '123456',
+      };
+      const passwordHash = 'HASHDESENHA';
+      const novaPessoa = {
+        id: 1,
+        nome: createPessoaDto.nome,
+        email: createPessoaDto.email,
+        passwordHash,
+      };
 
-    // Conferir se essa ação foi a esperada - Assert
-    // === 3 = toBe
-    expect(result).toBe(3);
+      // Como o valor retornado por hashingService.hash é necessário
+      // vamos simular este valor.
+      jest.spyOn(hashingService, 'hash').mockResolvedValue(passwordHash);
+      // Como a pessoa retornada por pessoaRepository.create é necessária em
+      // pessoaRepository.save. Vamos simular este valor.
+      jest.spyOn(pessoaRepository, 'create').mockReturnValue(novaPessoa as any);
+
+      // Act -> Ação
+      const result = await pessoaService.create(createPessoaDto);
+
+      // Assert
+      // O método hashingService.hash foi chamado com createPessoaDto.password?
+      expect(hashingService.hash).toHaveBeenCalledWith(
+        createPessoaDto.password,
+      );
+
+      // O método pessoaRepository.create foi chamado com os dados da nova
+      // pessoa com o hash de senha gerado por hashingService.hash?
+      expect(pessoaRepository.create).toHaveBeenCalledWith({
+        nome: createPessoaDto.nome,
+        passwordHash,
+        email: createPessoaDto.email,
+      });
+
+      // O método pessoaRepository.save foi chamado com os dados da nova
+      // pessoa gerada por pessoaRepository.create?
+      expect(pessoaRepository.save).toHaveBeenCalledWith(novaPessoa);
+
+      // O resultado do método pessoaService.create retornou a nova
+      // pessoa criada?
+      expect(result).toEqual(novaPessoa);
+    });
+
+    it('deve lançar ConflictException quando e-mail já existe', async () => {
+      jest.spyOn(pessoaRepository, 'save').mockRejectedValue({
+        code: '23505',
+      });
+
+      await expect(pessoaService.create({} as any)).rejects.toThrow(
+        ConflictException,
+      );
+    });
+
+    it('deve lançar ConflictException quando e-mail já existe', async () => {
+      jest.spyOn(pessoaRepository, 'save').mockRejectedValue(new Error('Erro generico'));
+
+      await expect(pessoaService.create({} as any)).rejects.toThrow(
+        new Error('Erro generico'),
+      );
+    });
+
   });
 });
