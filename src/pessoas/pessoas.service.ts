@@ -11,15 +11,11 @@ import * as fs from 'fs/promises'
 
 @Injectable()
 export class PessoasService {
-  private count = 0
-
   constructor(
     @InjectRepository(Pessoa)
     private readonly pessoaRepository: Repository<Pessoa>, //basicamento isso é o banco de dados
     private readonly hashingService: HashingService
-  ) {
-    this.count++
-  }
+  ) { }
 
   async create(createPessoaDto: CreatePessoaDto) {
     try {
@@ -57,7 +53,6 @@ export class PessoasService {
   }
 
   async findOne(id: number) {
-    this.count++
     const pessoa = await this.pessoaRepository.findOneBy({
       id,
     });
