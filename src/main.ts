@@ -1,18 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module'; //modulo raiz
-import { ValidationPipe } from '@nestjs/common';
-import { ParseIntIdPipe } from './common/pipes/parse-int-id.pipe';
+import helmet from 'helmet'
+import appConfig from './config/app.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true, //remove chaves que nao estão no meu DTO
-      forbidNonWhitelisted: true, //levanta o erro quando a chave nao existir
-      transform: true, //tenta transformar os tipos de dados de pararm e dtos
-    }),
-    new ParseIntIdPipe()
-  );
-  await app.listen(3000);
+
+  appConfig(app);
+
+  if (process.env.NODE_ENV === 'developtment') {
+    // helmet -> cabeçalhos de segurança no protocolo HTTP
+    app.use(helmet());
+
+    // cors -> permitir que outro domínio faça requests na sua aplicação
+    app.enableCors({
+      origin: 'https://meuapp.com.br',
+    });
+  }
+
+  await app.listen(process.env.APP_PORT);
 }
 bootstrap();
