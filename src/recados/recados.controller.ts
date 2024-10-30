@@ -3,73 +3,101 @@ import {
   Controller,
   Delete,
   Get,
-  Inject,
   Param,
   Patch,
   Post,
   Query,
-  SetMetadata,
   UseGuards,
 } from '@nestjs/common';
 import { RecadosService } from './recados.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { ReqDataParam } from 'src/common/params/req-data-param.decorator';
-import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
 import { TokenPayloadParam } from 'src/auth/params/token-payload.param';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiParam,
+} from '@nestjs/swagger';
 
-// CRUD
-// Creat -> POST -> Criar um recado
-// Read -> GET -> Ler todos os recados
-// Read -> GET -> Ler apenas um recado
-// Update -> PATCH / PUT -> Atualizar um recado
-// Delete -> Delete -> Apagar um recado
-
-//PATCH é utilizado para atualizar dados de um recurso
-//PUT é utilizado para atualizar um recurso inteiro
-
-//DTO - Data Transfer Object -> Objeto de transferência
-//DTO - Objeto simples -> Validar dados / Transformar dados
-
-
+@ApiTags('recados') // Tag usada para organizar os endpoints
 @Controller('recados')
 export class RecadosController {
-  constructor(
-    private readonly recadosService: RecadosService,
-  ) { }
-
+  constructor(private readonly recadosService: RecadosService) { }
 
   @Get()
-  async findAll(@Query() paginationDto: PaginationDto, @ReqDataParam('url') url) {
+  @ApiOperation({ summary: 'Obter todos os recados com paginação' }) // Descrição do endpoint
+  @ApiQuery({
+    name: 'offset',
+    required: false,
+    example: 1,
+    description: 'Itens a pular',
+  }) // Parâmetros da query
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    example: 10,
+    description: 'Limite de itens por página',
+  })
+  @ApiResponse({ status: 200, description: 'Recados retornados com sucesso.' }) // Resposta bem-sucedida
+  async findAll(@Query() paginationDto: PaginationDto) {
     const recados = await this.recadosService.findAll(paginationDto);
-    return recados
+    return recados;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.recadosService.findOne(id);
-
+  @ApiOperation({ summary: 'Obter um recado específico pelo ID' }) // Descrição da operação
+  @ApiParam({ name: 'id', description: 'ID do recado', example: 1 }) // Parâmetro da rota
+  @ApiResponse({ status: 200, description: 'Recado retornado com sucesso.' }) // Resposta bem-sucedida
+  @ApiResponse({ status: 404, description: 'Recado não encontrado.' }) // Resposta de erro
+  findOne(@Param('id') id: string) {
+    return this.recadosService.findOne(+id);
   }
 
   @UseGuards(AuthTokenGuard)
-  @ApiBearerAuth()
+  @ApiBearerAuth() // Autenticação via token
   @Post()
-  create(@Body() createRecadoDto: CreateRecadoDto, @TokenPayloadParam() tokenPayload: TokenPayloadDto) {
+  @ApiOperation({ summary: 'Criar um novo recado' }) // Descrição do endpoint
+  @ApiResponse({ status: 201, description: 'Recado criado com sucesso.' }) // Resposta de criação bem-sucedida
+  @ApiResponse({ status: 400, description: 'Dados inválidos.' }) // Resposta de erro
+  create(
+    @Body() createRecadoDto: CreateRecadoDto,
+    @TokenPayloadParam() tokenPayload: TokenPayloadDto,
+  ) {
     return this.recadosService.create(createRecadoDto, tokenPayload);
   }
 
   @UseGuards(AuthTokenGuard)
+  @ApiBearerAuth()
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateRecadoDto: UpdateRecadoDto, @TokenPayloadParam() tokenPayload: TokenPayloadDto) {
+  @ApiOperation({ summary: 'Atualizar um recado existente' }) // Descrição da operação
+  @ApiParam({ name: 'id', description: 'ID do recado', example: 1 }) // Parâmetro da rota
+  @ApiResponse({ status: 200, description: 'Recado atualizado com sucesso.' }) // Resposta de sucesso
+  @ApiResponse({ status: 404, description: 'Recado não encontrado.' }) // Resposta de erro
+  update(
+    @Param('id') id: number,
+    @Body() updateRecadoDto: UpdateRecadoDto,
+    @TokenPayloadParam() tokenPayload: TokenPayloadDto,
+  ) {
     return this.recadosService.update(id, updateRecadoDto, tokenPayload);
   }
 
   @UseGuards(AuthTokenGuard)
+  @ApiBearerAuth()
   @Delete(':id')
-  romove(@Param('id') id: number, @TokenPayloadParam() tokenPayload: TokenPayloadDto) {
-    this.recadosService.remove(id, tokenPayload);
+  @ApiOperation({ summary: 'Excluir um recado' }) // Descrição do endpoint
+  @ApiParam({ name: 'id', description: 'ID do recado', example: 1 }) // Parâmetro da rota
+  @ApiResponse({ status: 200, description: 'Recado excluído com sucesso.' }) // Resposta de sucesso
+  @ApiResponse({ status: 404, description: 'Recado não encontrado.' }) // Resposta de erro
+  remove(
+    @Param('id') id: number,
+    @TokenPayloadParam() tokenPayload: TokenPayloadDto,
+  ) {
+    return this.recadosService.remove(id, tokenPayload);
   }
 }
