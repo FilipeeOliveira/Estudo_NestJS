@@ -19,6 +19,7 @@ import { ReqDataParam } from 'src/common/params/req-data-param.decorator';
 import { AuthTokenGuard } from 'src/auth/guards/auth-token.guard';
 import { TokenPayloadParam } from 'src/auth/params/token-payload.param';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 // CRUD
 // Creat -> POST -> Criar um recado
@@ -54,6 +55,7 @@ export class RecadosController {
   }
 
   @UseGuards(AuthTokenGuard)
+  @ApiBearerAuth()
   @Post()
   create(@Body() createRecadoDto: CreateRecadoDto, @TokenPayloadParam() tokenPayload: TokenPayloadDto) {
     return this.recadosService.create(createRecadoDto, tokenPayload);

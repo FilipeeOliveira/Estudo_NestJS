@@ -9,6 +9,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ConfigService, ConfigType } from '@nestjs/config';
 import recadosConfig from './recados.config';
 import { TokenPayloadDto } from 'src/auth/dto/token-payload.dto';
+import { ReponseRecadoDto } from './dto/response-recado.dto';
 
 //Scope.DEFAULT -> O provider em questao é um singleton
 //Scope.REQUEST -> O provider em questao é instaciado a cada requisicao
@@ -33,7 +34,7 @@ export class RecadosService {
     throw new NotFoundException('Recado não encontrado');
   }
 
-  async findAll(paginationDto?: PaginationDto) {
+  async findAll(paginationDto?: PaginationDto): Promise<ReponseRecadoDto[]> {
     const { limit = 10, offset = 0 } = paginationDto
 
     const recados = await this.recadoRepository.find({
@@ -57,7 +58,7 @@ export class RecadosService {
     return recados;
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<ReponseRecadoDto> {
     // o find() Procura o primeiro item de um array que atende a uma condição e te dá esse item.
     //return this.recados.find(item => item.id === id) //para comverter o id string em number uso o +(mais) antes
     const recado = await this.recadoRepository.findOne({
@@ -85,7 +86,7 @@ export class RecadosService {
     this.throwNotFoundError();
   }
 
-  async create(createRecadoDto: CreateRecadoDto, tokenPayload: TokenPayloadDto) {
+  async create(createRecadoDto: CreateRecadoDto, tokenPayload: TokenPayloadDto): Promise<ReponseRecadoDto> {
     const { paraId } = createRecadoDto
 
     //Encontrar a pessoa que está criando o recado
@@ -117,7 +118,7 @@ export class RecadosService {
     }
   }
 
-  async update(id: number, updateRecadoDto: UpdateRecadoDto, tokenPayload: TokenPayloadDto) {
+  async update(id: number, updateRecadoDto: UpdateRecadoDto, tokenPayload: TokenPayloadDto): Promise<ReponseRecadoDto> {
     const recado = await this.findOne(id)
 
     if (recado.de.id !== tokenPayload.sub) {
@@ -132,13 +133,15 @@ export class RecadosService {
 
 
 
-  async remove(id: number, tokenPayload: TokenPayloadDto) {
+  async remove(id: number, tokenPayload: TokenPayloadDto): Promise<ReponseRecadoDto> {
     const recado = await this.findOne(id)
 
     if (recado.de.id !== tokenPayload.sub) {
       throw new ForbiddenException('Esse recado nao é seu!')
     }
 
-    return this.recadoRepository.remove(recado);
+    await this.recadoRepository.delete(recado.id)
+
+    return recado;
   }
 }
